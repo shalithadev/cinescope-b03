@@ -40,3 +40,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
     1. Tailwindcss
     2. Eslint
     3. App Router
+
+## TODO - 29/03/2024:
+
+    1. Create components folder
+    2. Create `header-nav.jsx` file
+    3. Create HeaderNav component
+    4. Add the jsx content
+    5. Add the classes
+    6. Explain `color-mix` and `oklab`
+    7. Create Logo component
+    8. Add `shadcn/ui` to the project
+    9. Create `mode-toggle.jsx` file
+    10. Create ModeToggle component
+    11. Oklch extension
+    12. Inspect tool color picker
