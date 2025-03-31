@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./logo";
+import { ModeToggle } from "./mode-toggle";
 
 export default function HeaderNav() {
   return (
@@ -35,6 +36,8 @@ export default function HeaderNav() {
           >
             Admin
           </Link>
+
+          <ModeToggle />
         </nav>
       </div>
     </header>
