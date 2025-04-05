@@ -55,3 +55,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
     10. Create ModeToggle component
     11. Oklch extension
     12. Inspect tool color picker
+
+## TODO - 06/04/2024:
+
+    1.
