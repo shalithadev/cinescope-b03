@@ -58,4 +58,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## TODO - 06/04/2024:
 
-    1.
+    1. Component Breakdown of Home Page
+        * Navbar
+        * Hero Banner
+        * Featured Movies List & Filters
+        * Footer
+    2. Create Hero Banner Component
+    3. Create Movie Card Component
+    4. Create Featured Movie Section
+    5. Create a dummy api route to fetch movies
+    6. Return dummy movies list
+    7. Static vs Dynamic routes (app/movies/[id])
+    8. Update Font in Root Layout
+    9. Add shadcn/ui (Input, Card) components
+    10. Create dummy movies list in lib
+    11. Allow remote url for images
