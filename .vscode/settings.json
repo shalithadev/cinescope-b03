@@ -1,9 +1,5 @@
 {
-    "cSpell.words": [
-        "mflix",
-        "oklab",
-        "Oklch",
-        "shadcn",
-        "turbopack"
-    ]
+  "cSpell.words": ["mflix", "oklab", "Oklch", "shadcn", "turbopack"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
