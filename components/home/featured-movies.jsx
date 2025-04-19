@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button";
 import MoviesList from "./movies-list";
+import { getMovies } from "@/actions/movies";
 
-export default function FeaturedMovies() {
+export default async function FeaturedMovies() {
+  const movies = await getMovies();
+
+  if (!movies) {
+    return null;
+  }
+
+  console.log("Featured Movies", movies);
+
   return (
     <section id="featured" className="container px-4 py-12 md:px-6">
       <div className="mb-8 flex items-center justify-between">
