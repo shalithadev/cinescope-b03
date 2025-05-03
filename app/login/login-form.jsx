@@ -76,7 +76,7 @@ export function LoginForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmitForm}>
+          <form id="login-form" onSubmit={handleSubmitForm}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>

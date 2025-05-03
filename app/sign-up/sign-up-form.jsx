@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +13,58 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
+// import { signIn } from "@/lib/auth-client";
+
+const DEFAULT_ERROR = {
+  error: false,
+  message: "",
+};
 
 export function LoginForm({ className, ...props }) {
+  const [isLoading, setLoading] = useState(false);
+  // Backend error handling
+  const [error, setError] = useState(DEFAULT_ERROR);
+
+  const validateForm = ({ email, password }) => {
+    if (email === "") {
+      setError({ error: true, message: "Email address cannot be empty" });
+      return false;
+    } else if (password === "") {
+      setError({ error: true, message: "Password cannot be empty" });
+      return false;
+    }
+
+    setError(DEFAULT_ERROR);
+    return true;
+  };
+
+  const handleSubmitForm = async (event) => {
+    // Prevent default form submission
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email")?.toString() ?? "";
+    const password = formData.get("password")?.toString() ?? "";
+
+    console.log("cred", password, email);
+
+    // Continue the submission only if form is valid
+    if (validateForm({ email, password })) {
+      // setLoading(true);
+      // await signIn.email(
+      //   { email, password },
+      //   {
+      //     onSuccess: () => {
+      //       redirect("/dashboard");
+      //     },
+      //     onError: (ctx) => {
+      //       setError({ error: true, message: ctx.error.message });
+      //       setLoading(false);
+      //     },
+      //   }
+      // );
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -22,33 +75,36 @@ export function LoginForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form id="sign-up-form" onSubmit={handleSubmitForm}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Enter your email"
-                  required
+                  autoComplete="email"
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="Enter your password"
-                  required
+                  autoComplete="new-password"
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Confirm Password</Label>
                 <Input
                   id="confirm-password"
+                  name="confirm-password"
                   type="password"
                   placeholder="Confirm your password"
-                  required
+                  autoComplete="new-password"
                 />
               </div>
               <div className="flex flex-col gap-3">
