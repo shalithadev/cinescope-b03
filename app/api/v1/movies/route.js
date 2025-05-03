@@ -13,7 +13,11 @@ export const GET = async () => {
       .find({})
       .sort({ metacritic: -1 })
       .limit(20)
-      .toArray();
+      .toArray()
+      .catch((error) => {
+        console.error("Error fetching movies from database:", error);
+        return [];
+      });
 
     return NextResponse.json(movies);
   } catch (error) {
