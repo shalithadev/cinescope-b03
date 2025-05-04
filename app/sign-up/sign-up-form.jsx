@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,23 +10,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "@/lib/auth-client";
+import Link from "next/link";
 import { EMAIL_REGEX } from "@/lib/constants";
+import { signUp } from "@/lib/auth-client";
 
 const DEFAULT_ERROR = {
   error: false,
   message: "",
 };
 
-// Client component (CSR)
-export function LoginForm() {
-  const [isLoading, setLoading] = useState(false);
+export function SignUpForm({ className, ...props }) {
   const [error, setError] = useState(DEFAULT_ERROR);
 
-  const validateForm = ({ email, password }) => {
+  const validateForm = ({ email, password, confirmPassword }) => {
     if (email === "") {
       setError({
         error: true,
@@ -46,6 +43,18 @@ export function LoginForm() {
         message: "Email is invalid",
       });
       return false;
+    } else if (password.length < 8) {
+      setError({
+        error: true,
+        message: "Password must be at least 8 characters",
+      });
+      return false;
+    } else if (password !== confirmPassword) {
+      setError({
+        error: true,
+        message: "Passwords do not match",
+      });
+      return false;
     }
     setError(DEFAULT_ERROR);
     return true;
@@ -57,21 +66,26 @@ export function LoginForm() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
 
-    if (validateForm({ email, password })) {
-      await signIn.email(
-        { email, password },
+    console.log(email, password, confirmPassword);
+
+    if (validateForm({ email, password, confirmPassword })) {
+      await signUp.email(
+        { email, password, name: "Guest User", image: undefined },
         {
+          onRequest: (ctx) => {
+            console.log("onRequest", ctx);
+          },
           onSuccess: () => {
-            setLoading(false);
-            redirect("/dashboard");
+            // redirect to login
           },
           onError: (ctx) => {
             setError({
               error: true,
               message: ctx.error.message,
             });
-            setLoading(false);
+            // loading false
           },
         }
       );
@@ -79,12 +93,12 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Create an account</CardTitle>
           <CardDescription>
-            Enter your credentials to login to account
+            Enter your details below to sign up for an account.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -97,25 +111,30 @@ export function LoginForm() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
+                  required
                   autoComplete="email"
                 />
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="email">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  autoComplete="current-password"
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="password">Confirm Password</Label>
+                <Input
+                  id="confirm-password"
+                  name="confirm-password"
+                  type="password"
+                  placeholder="Confirm your password"
+                  required
+                  autoComplete="new-password"
                 />
               </div>
               {/* Error Message Here */}
@@ -127,23 +146,18 @@ export function LoginForm() {
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading && <Loader2 className="animate-spin" />} Login
+                <Button type="submit" className="w-full">
+                  Sign Up
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  disabled={isLoading}
-                >
-                  Login with Google
+                <Button type="button" variant="outline" className="w-full">
+                  Continue with Google
                 </Button>
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="underline underline-offset-4">
-                Sign up
+              Already have an account?{" "}
+              <Link href="/login" className="underline underline-offset-4">
+                Login
               </Link>
             </div>
           </form>
