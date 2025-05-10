@@ -64,7 +64,7 @@ export function LoginForm() {
         {
           onSuccess: () => {
             setLoading(false);
-            redirect("/dashboard");
+            redirect("/admin");
           },
           onError: (ctx) => {
             setError({
