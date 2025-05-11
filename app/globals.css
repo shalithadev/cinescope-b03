@@ -2,12 +2,13 @@
 @import "tw-animate-css";
 
 :root {
+  --background: hsl(0 0% 100%);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(222.2 84% 4.9%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: 222.2 84% 4.9%;
-  --primary: hsl(165 74% 47%); /* #1dd1a1 - Primary Color Hex  */
-  --primary-foreground: hsl(210 40% 98%);
+  --primary: 165 74% 47%; /* #1dd1a1 - Primary Color Hex  */
+  --primary-foreground: 210 40% 98%;
   --secondary: hsl(165 74% 95%);
   --secondary-foreground: hsl(165 74% 20%);
   --muted: hsl(165 74% 95%);
@@ -22,7 +23,7 @@
   --radius: 0.5rem;
 
   /* Chart colors */
-  --chart-1: hsl(165 74% 47%);
+  /* --chart-1: hsl(165 74% 47%);
   --chart-2: hsl(165 74% 67%);
   --chart-3: hsl(165 74% 27%);
   --chart-4: hsl(190 74% 47%);
@@ -36,7 +37,7 @@
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.708 0 0); */
 }
 
 .dark {
@@ -46,8 +47,8 @@
   --card-foreground: hsl(210 40% 98%);
   --popover: hsl(222.2 84% 4.9%);
   --popover-foreground: hsl(210 40% 98%);
-  --primary: hsl(165 74% 47%);
-  --primary-foreground: hsl(222.2 47.4% 11.2%);
+  --primary: 165 74% 47%;
+  --primary-foreground: 222.2 47.4% 11.2%;
   --secondary: hsl(165 74% 15%);
   --secondary-foreground: hsl(210 40% 98%);
   --muted: hsl(165 74% 15%);
@@ -62,7 +63,7 @@
   --radius: 0.5rem;
 
   /* Chart colors */
-  --chart-1: oklch(0.488 0.243 264.376);
+  /* --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
@@ -74,7 +75,7 @@
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.556 0 0); */
 }
 
 @custom-variant dark (&:is([data-theme='dark'] *));
@@ -115,8 +116,8 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);

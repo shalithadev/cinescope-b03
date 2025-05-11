@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import MoviesList from "./movies-list";
+import MoviesList, { MoviesListSkeleton } from "./movies-list";
 
 export default function FeaturedMovies() {
   return (
@@ -34,9 +34,7 @@ export default function FeaturedMovies() {
           </div>
         </div>
 
-        <Suspense
-          fallback={<div className="h-96 animate-pulse rounded-lg bg-muted" />}
-        >
+        <Suspense fallback={<MoviesListSkeleton />}>
           <MoviesList />
         </Suspense>
       </div>
