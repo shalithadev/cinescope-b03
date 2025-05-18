@@ -1,3 +1,7 @@
+"use server";
+
+import { db } from "@/lib/db";
+
 // get all movies action
 export const getMovies = async () => {
   try {
@@ -24,5 +28,24 @@ export const getMovies = async () => {
   } catch (error) {
     console.log("Error fetching movies:", error);
     return undefined;
+  }
+};
+
+// Create movie action
+export const createMovie = async (movie) => {
+  try {
+    const result = await db.collection("movies_n").insertOne(movie);
+
+    if (result.acknowledged) {
+      console.log(`A movie was inserted with the _id: ${result.insertedId}`);
+      return {
+        success: true,
+        message: "Movie created successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch {
+    console.log("Mongodb insert failed!");
   }
 };
