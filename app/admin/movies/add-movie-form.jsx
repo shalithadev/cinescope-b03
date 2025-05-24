@@ -15,7 +15,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { createMovie } from "@/actions/movies";
 
-export function AddMovieForm() {
+export function AddMovieForm({ onCancel }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -178,7 +178,13 @@ export function AddMovieForm() {
       </div>
 
       <DialogFooter>
-        <Button type="button" variant="outline" className="min-w-[102px]">
+        <Button
+          type="reset"
+          variant="outline"
+          className="min-w-[102px]"
+          disabled={isSubmitting}
+          onClick={() => onCancel(false)}
+        >
           Cancel
         </Button>
         <Button type="submit" className="min-w-[102px]" disabled={isSubmitting}>
