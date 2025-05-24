@@ -15,8 +15,19 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { createMovie } from "@/actions/movies";
 
-export function AddMovieForm() {
+export function AddMovieForm({ onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Controlled states
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedGenres, setSelectedGenres] = useState("");
+
+  const handleClose = () => {
+    // Reset controlled fields
+    setSelectedYear(null);
+    setSelectedGenres(null);
+    // Close the dialog
+    onClose(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,6 +76,7 @@ export function AddMovieForm() {
 
     if (response?.success) {
       console.log(response);
+      handleClose();
     }
   };
 
@@ -77,9 +89,15 @@ export function AddMovieForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="year">Year</Label>
-          <Select id="year" name="year" required>
+          <Select
+            id="year"
+            name="year"
+            onValueChange={setSelectedYear}
+            value={selectedYear}
+            required
+          >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select year" />
+              <SelectValue placeholder="Please select year" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="2025">2025</SelectItem>
@@ -95,9 +113,15 @@ export function AddMovieForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="genre">Genre</Label>
-          <Select id="genre" name="genre" required>
+          <Select
+            id="genre"
+            name="genre"
+            required
+            onValueChange={setSelectedGenres}
+            value={selectedGenres}
+          >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select genre" />
+              <SelectValue placeholder="Please select genre" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Action">Action</SelectItem>
@@ -178,7 +202,13 @@ export function AddMovieForm() {
       </div>
 
       <DialogFooter>
-        <Button type="button" variant="outline" className="min-w-[102px]">
+        <Button
+          type="reset"
+          variant="outline"
+          className="min-w-[102px]"
+          disabled={isSubmitting}
+          onClick={handleClose}
+        >
           Cancel
         </Button>
         <Button type="submit" className="min-w-[102px]" disabled={isSubmitting}>
