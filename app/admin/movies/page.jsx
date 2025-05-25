@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { Shell } from "lucide-react";
 import AddMovieDialog from "./add-movie-dialog";
 import MovieData from "./movie-data";
 
@@ -16,15 +14,7 @@ export default function MoviesPage() {
         <AddMovieDialog />
       </div>
 
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-center h-[400px]">
-            <Shell className="animate-spin duration-1000 text-primary-400" />
-          </div>
-        }
-      >
-        <MovieData />
-      </Suspense>
+      <MovieData />
     </div>
   );
 }
