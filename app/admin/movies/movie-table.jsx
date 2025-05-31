@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,9 +23,49 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import UpdateMovieDialog from "./update-movie-dialog";
+import DeleteMovieDialog from "./delete-movie-dialog";
+import { deleteMovie } from "@/actions/movies";
 // import { MOVIES } from "@/lib/data";
 
 export default function MovieTable({ movies }) {
+  const router = useRouter();
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const toggleUpdateDialog = (open) => {
+    // Using requestAnimationFrame to ensure the dialog opens after the state update
+    requestAnimationFrame(() => setShowUpdateDialog(open || !showUpdateDialog));
+  };
+
+  const toggleDeleteDialog = (open) => {
+    // Using requestAnimationFrame to ensure the dialog opens after the state update
+    requestAnimationFrame(() => setShowDeleteDialog(open || !showDeleteDialog));
+  };
+
+  const handleDeleteMovie = async (movieId) => {
+    const resp = await deleteMovie(movieId);
+    if (resp?.success) {
+      setSelectedMovie(null);
+      toggleDeleteDialog(false);
+      router.refresh();
+    }
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -34,7 +76,7 @@ export default function MovieTable({ movies }) {
             <TableHead>Title</TableHead>
             <TableHead>Year</TableHead>
             <TableHead>Genre</TableHead>
-            <TableHead>Rating</TableHead>
+            <TableHead className="text-center">Rating</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -65,9 +107,11 @@ export default function MovieTable({ movies }) {
                   ))}
                 </div>
               </TableCell>
-              <TableCell>{movie.rating}</TableCell>
+              <TableCell className="text-center">
+                {Number(movie?.imdb?.rating).toFixed(1)}
+              </TableCell>
               <TableCell className="capitalize">
-                <Badge className="bg-green-100 text-green-800">
+                <Badge className={getStatusClass(movie.status)}>
                   {movie.status}
                 </Badge>
               </TableCell>
@@ -83,9 +127,22 @@ export default function MovieTable({ movies }) {
                     <DropdownMenuLabel>Movie Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>View Details</DropdownMenuItem>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedMovie(movie);
+                        toggleUpdateDialog(true);
+                      }}
+                    >
+                      Edit
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive">
+                    <DropdownMenuItem
+                      className="text-destructive"
+                      onClick={() => {
+                        setSelectedMovie(movie);
+                        toggleDeleteDialog(true);
+                      }}
+                    >
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -95,6 +152,20 @@ export default function MovieTable({ movies }) {
           ))}
         </TableBody>
       </Table>
+
+      <UpdateMovieDialog
+        open={showUpdateDialog}
+        onOpenChange={toggleUpdateDialog}
+        movie={selectedMovie}
+      />
+
+      <DeleteMovieDialog
+        open={showDeleteDialog}
+        onOpenChange={toggleDeleteDialog}
+        onConfirm={handleDeleteMovie}
+        movie={selectedMovie}
+        isLoading={false}
+      />
     </div>
   );
 }

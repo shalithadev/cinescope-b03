@@ -7,7 +7,7 @@ export default async function MovieData() {
 
     if (movies.length > 0) {
       const refinedMovies = movies.map((movie, key) => ({
-        id: key + 1,
+        id: movie._id.toString(),
         title: movie.title,
         year: movie.year,
         plot: movie.plot,
@@ -16,6 +16,8 @@ export default async function MovieData() {
         poster: movie.poster,
         imdb: movie.imdb,
         runtime: movie.runtime,
+        status: movie.status,
+        directors: movie.directors,
       }));
 
       return <MovieTable movies={refinedMovies} />;

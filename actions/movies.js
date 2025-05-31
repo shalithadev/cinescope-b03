@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { ObjectId } from "mongodb";
 
 // get all movies action
 export const getMovies = async () => {
@@ -47,5 +48,51 @@ export const createMovie = async (movie) => {
     }
   } catch {
     console.log("Mongodb insert failed!");
+  }
+};
+
+// Update movie action
+export const updateMovie = async (movieId, movieDoc) => {
+  try {
+    const result = await db
+      .collection("movies_n")
+      .updateOne(
+        { _id: ObjectId.createFromHexString(movieId) },
+        { $set: movieDoc },
+        { upsert: true }
+      );
+
+    if (result.acknowledged) {
+      console.log(`A movie was inserted with the _id: ${result.insertedId}`);
+      return {
+        success: true,
+        message: "Movie updated successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch {
+    console.log("Mongodb update failed!");
+  }
+};
+
+// Delete movie action
+export const deleteMovie = async (movieId) => {
+  try {
+    const result = await db
+      .collection("movies_n")
+      .deleteOne({ _id: ObjectId.createFromHexString(movieId) });
+
+    if (result.acknowledged) {
+      console.log(`A movie was deleted with the _id: ${result.insertedId}`);
+      return {
+        success: true,
+        message: "Movie deleted successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch {
+    console.log("Mongodb delete failed!");
   }
 };
