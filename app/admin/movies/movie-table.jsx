@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,9 +22,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import UpdateMovieDialog from "./update-movie-dialog";
 // import { MOVIES } from "@/lib/data";
 
 export default function MovieTable({ movies }) {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showUpdateMovie, setShowUpdateMovie] = useState(false);
+
+  const toggleUpdateDialog = (open) => {
+    // Using requestAnimationFrame to ensure the dialog opens after the state update
+    requestAnimationFrame(() => setShowUpdateMovie(open || !showUpdateMovie));
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -83,7 +93,14 @@ export default function MovieTable({ movies }) {
                     <DropdownMenuLabel>Movie Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>View Details</DropdownMenuItem>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedMovie(movie);
+                        toggleUpdateDialog(true);
+                      }}
+                    >
+                      Edit
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-destructive">
                       Delete
@@ -95,6 +112,12 @@ export default function MovieTable({ movies }) {
           ))}
         </TableBody>
       </Table>
+
+      <UpdateMovieDialog
+        open={showUpdateMovie}
+        onOpenChange={toggleUpdateDialog}
+        movie={selectedMovie}
+      />
     </div>
   );
 }
