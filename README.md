@@ -73,3 +73,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
     9. Add shadcn/ui (Input, Card) components
     10. Create dummy movies list in lib
     11. Allow remote url for images
+
+## TODO - 07/06/2025:
+
+    1. [useEffect() hook](https://react.dev/reference/react/useEffect)
+    2. Lifting State Up
+    3. Middleware
+    3. [Context API](https://vercel.com/guides/react-context-state-management-nextjs)
+    4. Nested Routes & [Route Parameters](https://nextjs.org/docs/app/guides/upgrading/version-15#params--searchparams)
+    5. Dynamic Routing
+    6. Handling Navigation and Redirection
+    7. Search Movies
+    8. Authentication Route Validation
