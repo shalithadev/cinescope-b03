@@ -1,6 +1,7 @@
 import AddMovieDialog from "./add-movie-dialog";
 import MovieData from "./movie-data";
 
+// Server Component
 export default function MoviesPage() {
   // space-y-4: 16px
   return (
