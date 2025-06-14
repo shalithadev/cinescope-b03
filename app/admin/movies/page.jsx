@@ -1,8 +1,17 @@
 import AddMovieDialog from "./add-movie-dialog";
 import MovieData from "./movie-data";
+import MovieSelectors from "./movie-selectors";
+
+export const metadata = {
+  title: "CineScope | Admin Movies Table",
+  description: "Find your favorite movie ratings and recommendations",
+};
 
 // Server Component
-export default function MoviesPage() {
+export default async function MoviesPage(props) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+
   // space-y-4: 16px
   return (
     <div className="space-y-4">
@@ -15,7 +24,9 @@ export default function MoviesPage() {
         <AddMovieDialog />
       </div>
 
-      <MovieData />
+      <MovieSelectors />
+
+      <MovieData query={query} />
     </div>
   );
 }

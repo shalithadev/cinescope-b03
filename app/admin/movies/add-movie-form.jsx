@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { createMovie } from "@/actions/movies";
 import { getAllYears } from "@/lib/utils";
 
+// Smart Component
 export function AddMovieForm({ onClose }) {
   const years = getAllYears();
   const [isSubmitting, setIsSubmitting] = useState(false);

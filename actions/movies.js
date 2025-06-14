@@ -32,6 +32,39 @@ export const getMovies = async () => {
   }
 };
 
+// get all movies with filters action
+export const searchMovies = async (query) => {
+  try {
+    // Search by title (case-insensitive)
+    const movies = await db
+      .collection("movies")
+      .find({ title: { $regex: query, $options: "i" } })
+      .limit(50)
+      .toArray();
+
+    if (movies && movies.length > 0) {
+      return {
+        success: true,
+        message: "Movies fetched successfully!",
+        data: movies,
+      };
+    } else {
+      return {
+        success: false,
+        message: "No movies found!",
+        data: [],
+      };
+    }
+  } catch (error) {
+    console.log("Mongodb fetch failed!", error);
+    return {
+      success: false,
+      message: "Error fetching movies.",
+      data: [],
+    };
+  }
+};
+
 // get all movies action
 export const getMovieById = async (movieId) => {
   try {

@@ -11,7 +11,9 @@ export default function Home() {
         <HeroBanner />
         <FeaturedMovies />
       </main>
-      <footer className="bg-amber-400 h-72">Footer Section</footer>
+      <footer className="bg-amber-400 h-72">
+        <h1 className="text-center my-12">Footer Section</h1>
+      </footer>
     </div>
   );
 }

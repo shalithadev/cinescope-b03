@@ -87,13 +87,7 @@ export default function MovieTable({ movies }) {
               <TableCell className="font-medium">{key + 1}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <Image
-                    src={movie.poster || "/images/movie-placeholder.png"}
-                    alt={movie.title}
-                    height={40}
-                    width={28}
-                    className="h-10 w-7 rounded object-cover"
-                  />
+                  <MoviePoster src={movie.poster} alt={movie.title} />
                   <span className="font-medium">{movie.title}</span>
                 </div>
               </TableCell>
@@ -167,5 +161,24 @@ export default function MovieTable({ movies }) {
         isLoading={false}
       />
     </div>
+  );
+}
+
+export function MoviePoster({ src, alt }) {
+  const [imgSrc, setImgSrc] = useState(src || "/images/movie-placeholder.png");
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      height={40}
+      width={28}
+      className="h-10 w-7 rounded object-cover"
+      onError={() => {
+        if (imgSrc !== "/images/movie-placeholder.png") {
+          setImgSrc("/images/movie-placeholder.png");
+        }
+      }}
+    />
   );
 }
