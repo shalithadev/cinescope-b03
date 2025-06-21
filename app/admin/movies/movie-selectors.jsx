@@ -1,7 +1,8 @@
 "use client";
 
-import { useDeferredValue, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,8 +24,8 @@ export default function MovieSelectors() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [immediateSearchTerm, setImmediateSearchTerm] = useState(searchTerm);
 
-  const deferredSearchTerm = useDeferredValue(immediateSearchTerm);
   const isFirstRender = useRef(true);
+  const [debouncedSearchTerm] = useDebounce(immediateSearchTerm, 1000);
 
   const handleMovieSearch = (term) => setImmediateSearchTerm(term);
 
@@ -34,14 +35,20 @@ export default function MovieSelectors() {
       return;
     }
 
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
 
-    deferredSearchTerm
-      ? params.set("query", deferredSearchTerm)
-      : params.delete("query");
+    if (debouncedSearchTerm) {
+      params.set("query", debouncedSearchTerm);
+    } else {
+      params.delete("query");
+    }
 
-    replace(`${pathname}?${params.toString()}`);
-  }, [deferredSearchTerm]);
+    // Only replace if the query param actually changed
+    if (searchParams.get("query") !== debouncedSearchTerm) {
+      replace(`${pathname}?${params}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm, pathname, replace]);
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

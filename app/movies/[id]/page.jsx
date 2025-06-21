@@ -19,7 +19,14 @@ export async function generateMetadata(props) {
 export default async function MovieDetailsPage(props) {
   const { id } = await props.params;
   // const searchParams = await props.searchParams;
+  // Simulate a delay for demonstration (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const movie = await getMovieById(id);
+
+  if (!movie || !movie.data) {
+    throw new Error("Movie not found");
+  }
 
   return (
     <main className="flex flex-col justify-center py-16 px-4 mx-auto">
