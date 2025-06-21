@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDebounce } from "use-debounce";
 
 export default function MovieSelectors() {
   const searchParams = useSearchParams();
@@ -23,8 +24,9 @@ export default function MovieSelectors() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [immediateSearchTerm, setImmediateSearchTerm] = useState(searchTerm);
 
-  const deferredSearchTerm = useDeferredValue(immediateSearchTerm);
+  // const deferredSearchTerm = useDeferredValue(immediateSearchTerm);
   const isFirstRender = useRef(true);
+  const [debouncedSearchTerm] = useDebounce(immediateSearchTerm, 1000);
 
   const handleMovieSearch = (term) => setImmediateSearchTerm(term);
 
@@ -34,14 +36,16 @@ export default function MovieSelectors() {
       return;
     }
 
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
 
-    deferredSearchTerm
-      ? params.set("query", deferredSearchTerm)
+    debouncedSearchTerm
+      ? params.set("query", debouncedSearchTerm)
       : params.delete("query");
 
-    replace(`${pathname}?${params.toString()}`);
-  }, [deferredSearchTerm]);
+    if (searchTerm !== debouncedSearchTerm) {
+      replace(`${pathname}?${params.toString()}`);
+    }
+  }, [debouncedSearchTerm, pathname, replace]);
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

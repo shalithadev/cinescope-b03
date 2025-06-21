@@ -1,6 +1,9 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+// export const revalidate = 60;
+
 // Our first GET API route
 export const GET = async () => {
   try {
