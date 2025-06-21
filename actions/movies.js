@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 export const getMovies = async () => {
   try {
     // using fetch API to get movies from the server
-    const response = await fetch("/api/v1/movies", {
+    const response = await fetch(`${process.env.API_BASE_URL}/v1/movies`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
